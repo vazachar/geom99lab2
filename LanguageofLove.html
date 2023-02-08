@@ -1,0 +1,69 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ArcGIS Maps SDK for JavaScript Tutorials: Add a feature layer</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.25/"></script>
+
+  <script>
+  require([
+    "esri/config",
+    "esri/Map",
+    "esri/views/MapView",
+
+    "esri/layers/FeatureLayer"
+
+  ], function(esriConfig,Map, MapView, FeatureLayer) {
+
+  esriConfig.apiKey = "AAPKc2238a8a1b7a4a53a0a6628d74146a68_dWpwTpbnBiAvo2xKNSqcTsZcZfUTdvQSofRzNeGh3GInmOpkIXVw7t6EPTpGBcQ";
+
+  const map = new Map({
+    basemap: "arcgis-topographic"
+  });
+
+  const view = new MapView({
+    container: "viewDiv",
+    map: map,
+    center: [4.124856, 43.310851],
+    zoom: 5
+  });
+      // Define a pop-up for Hearts
+      const popuphearts = {
+        "title": "Love Languages",
+        "content": "<b>Country:</b> {Country}<br><b>Language:</b> {Language}<br><b>Description:</b> {Description}",
+      }
+      const heartsRenderer = {
+        type: "simple",
+        symbol: {
+          color: "#FF0000",
+          type: "simple-fill",
+          style: "solid",
+      }
+    }
+    const hearts = new FeatureLayer({
+        url: "https://services1.arcgis.com/pMeXRvgWClLJZr3s/arcgis/rest/services/love_languages/FeatureServer",
+        outFields: ["Language","Country","Description"],
+        popupTemplate: popuphearts,
+        renderer: heartsRenderer,
+        opacity: .50
+      });
+
+      map.add(hearts);
+
+    }); 
+</script>
+
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
